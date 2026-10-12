@@ -1,24 +1,19 @@
-import java.util.HashMap;
-import java.util.Map;
-
 class Solution {
     public int findKthPositive(int[] arr, int k) {
-        Map<Integer, Boolean> map = new HashMap<>();
-        for (int num : arr) {
-            map.put(num, true);
-        }
+        int left = 0;
+        int right = arr.length - 1;
 
-        int current = 1;
-        while (k > 0) {
-            if (!map.containsKey(current)) {
-                k--;
-                if (k == 0) {
-                    return current;
-                }
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+            int missing = arr[mid] - (mid + 1);
+
+            if (missing < k) {
+                left = mid + 1;
+            } else {
+                right = mid - 1;
             }
-            current++;
         }
 
-        return current;
+        return left + k;
     }
 }
