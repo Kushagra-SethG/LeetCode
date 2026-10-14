@@ -1,29 +1,28 @@
 class Solution {
-    public static boolean isPossible(int [] piles, double val, long h){
-        double sum=0;
-        for(int i=0; i<piles.length; i++){
-            sum += Math.ceil(piles[i]/(val * 1f));
-        }
-        return (sum<=h);
-    }
     public int minEatingSpeed(int[] piles, int h) {
-        int max= -1;
-        for(int i=0; i<piles.length; i++){
-            max= Math.max(max,piles[i]);
-        }
-        int start= 1;
-        int end= max;
-        int ans= -1;
-        while(start <= end){
-            int mid= start + (end-start)/2;
-            if(isPossible(piles, mid, h)){
-                ans= mid;
-                end= mid-1;
-            }
-            else {
-                start= mid+1;
+        int left = 1;
+        int right = 0;
+        for (int pile : piles) {
+            if (pile > right) {
+                right = pile;
             }
         }
-        return ans;
+
+        while (left < right) {
+            int mid = left + (right - left) / 2;
+            int totalHours = 0;
+
+            for (int pile : piles) {
+                totalHours += (pile + mid - 1) / mid;
+            }
+
+            if (totalHours <= h) {
+                right = mid;
+            } else {
+                left = mid + 1;
+            }
+        }
+
+        return left;
     }
 }
