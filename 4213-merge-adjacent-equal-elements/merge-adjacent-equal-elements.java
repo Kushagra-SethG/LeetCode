@@ -1,25 +1,23 @@
 class Solution {
     public List<Long> mergeAdjacent(int[] nums) {
-        Map<Integer, Long> map = new HashMap<>();
-        int top = -1;
+        Deque<Long> stack = new ArrayDeque<>();
 
         for (int num : nums) {
             long current = num;
 
-            while (top >= 0 && map.get(top) == current) {
-                current += map.remove(top);
-                top--;
+            while (!stack.isEmpty() && stack.peek() == current) {
+                current += stack.pop();
             }
 
-            top++;
-            map.put(top, current);
+            stack.push(current);
         }
 
         List<Long> result = new ArrayList<>();
-        for (int i = 0; i <= top; i++) {
-            result.add(map.get(i));
+        while (!stack.isEmpty()) {
+            result.add(stack.pop());
         }
 
+        Collections.reverse(result);
         return result;
     }
 }
